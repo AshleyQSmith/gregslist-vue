@@ -26,7 +26,7 @@
 </script>
 
 <style>
-  .cars {
+  .car {
     outline: 1px solid black;
   }
 </style>
