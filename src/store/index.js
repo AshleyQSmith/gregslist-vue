@@ -12,18 +12,14 @@ let _api = axios.create({
 export default new Vuex.Store({
   state: {
     cars: [],
-    houses: [],
-    jobs: []
+    activeCar: {}
   },
   mutations: {
     setCars(state, cars) {
       state.cars = cars
     },
-    setHouses(state, houses){
-      state.houses = houses
-    },
-    setJobs(state, jobs) {
-      state.jobs = jobs
+    setActiveCar(state, car) {
+      state.activeCar = car
     }
   },
   actions: {
@@ -36,18 +32,11 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
-    async getHouses({commit, dispatch}){
+    async getCar({ commit, dispatch }, carId) {
       try {
-        let res = await _api.get('houses')
-        commit('setHouses', res.data.data)
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async getJobs ({commit,dispatch}){
-      try {
-        let res = await _api.get('jobs')
-        commit('setJobs')
+        let res = await _api.get(`cars/${carId}`)
+        console.log(res.data.data)
+        commit('setActiveCar', res.data.data)
       } catch (error) {
         console.error(error)
       }
@@ -60,22 +49,6 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
-    async deleteHouse({commit,dispatch}, houseId){
-      try {
-        await _api.delete('houses/' + houseId)
-        dispatch('getHouses')
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async deleteJob({commit,dispatch}, jobId){
-      try {
-        await _api.delete('jobs/' + jobId)
-        dispatch('getJobs')
-      } catch (error) {
-        console.error(error)
-      }
-    },
     async createCar({ commit, dispatch }, newCar) {
       try {
         let res = await _api.post('cars', newCar)
@@ -84,21 +57,8 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
-    async createHouse({commit, dispatch}, newHouse){
-      try {
-        let res = await _api.post('houses', newHouse)
-        dispatch('getHouses')
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async createJob({commit,dispatch}, newJob){
-      try {
-        let res = await _api.post('jobs', newJob)
-        dispatch('getJobs')
-      } catch (error) {
-        console.error(error)
-      }
+    getHouses({ commit, dispatch }) {
+
     }
   },
   modules: {
